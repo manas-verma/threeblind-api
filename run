@@ -1,0 +1,8 @@
+#!bash
+
+# Build the Docker image using the development target
+docker build --target development -t threeblind .
+
+# Run the Docker container with volume mount for hot-reloading
+docker run -p 8000:8000 -v $(pwd):/src --env-file .env.local threeblind
+
