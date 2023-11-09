@@ -1,12 +1,21 @@
 from typing import Dict, Tuple
 
-from app.models import (CENTERS, CLOCKWISE, CORNER, EDGES, Corner, Cube, Edge,
-                        Face, Move)
+from app.models import (
+    CENTERS,
+    CLOCKWISE,
+    CORNERS,
+    EDGES,
+    Corner,
+    Cube,
+    Edge,
+    Face,
+    Move,
+)
 
 
 def make_cube() -> Cube:
     edges = {edge: edge for edge in EDGES}
-    corners = {corner: corner for corner in CORNER}
+    corners = {corner: corner for corner in CORNERS}
     centers = {center: center for center in CENTERS}
     return (
         centers,

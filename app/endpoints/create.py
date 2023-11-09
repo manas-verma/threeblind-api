@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from app.core import make_memo
-from app.models import Corner, Edge, Memo
+from app.models import CORNERS, EDGES, Corner, Edge, Memo
 
 router = APIRouter()
 endpoint = "/create"
@@ -15,8 +15,8 @@ class Request(BaseModel):
     corner_buffer: Corner
     edge_buffer: Edge
     parity_edges: Tuple[Edge, Edge]
-    corner_mapping: Dict[Corner, str]
-    edge_mapping: Dict[Edge, str]
+    reverse_corner_mapping: Dict[str, Corner]
+    reverse_edge_mapping: Dict[str, Edge]
 
 
 class Response(BaseModel):
@@ -25,12 +25,22 @@ class Response(BaseModel):
 
 @router.post(endpoint)
 async def handler(req: Request) -> Response:
+    corner_mapping: Dict[Corner, str] = {
+        v: k for k, v in req.reverse_corner_mapping.items()
+    }
+    for corner in CORNERS:
+        corner_mapping[corner] = corner_mapping.get(corner, "")
+
+    edge_mapping: Dict[Edge, str] = {v: k for k, v in req.reverse_edge_mapping.items()}
+    for edge in EDGES:
+        edge_mapping[edge] = edge_mapping.get(edge, "")
+
     memo = make_memo(
         req.scramble,
         req.corner_buffer,
         req.edge_buffer,
         req.parity_edges,
-        req.corner_mapping,
-        req.edge_mapping,
+        corner_mapping,
+        edge_mapping,
     )
     return Response(memo=memo)

@@ -60,7 +60,7 @@ EDGES: List[Edge] = [
 ]
 
 Corner = Tuple[Face, Face, Face]
-CORNER: List[Corner] = [
+CORNERS: List[Corner] = [
     (U, F, R),
     (U, F, L),
     (U, B, R),
