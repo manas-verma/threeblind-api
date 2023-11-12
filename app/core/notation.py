@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Callable, Dict, List
 
 from app.models import B, D, Direction, F, Face, L, Move, R, U
 
@@ -15,6 +15,18 @@ DIRECTION_NOTATION: Dict[str, Direction] = {
     "": 1,
     "'": -1,
     "2": 2,
+}
+
+CUBE_ROTATIONS: Dict[str, Dict[Face, Face]] = {
+    "x": {U: B, F: U, D: F, B: D, R: R, L: L},
+    "y": {F: R, R: B, B: L, L: F, U: U, D: D},
+    "z": {U: R, L: U, D: L, R: D, F: F, B: B},
+    "x'": {U: F, F: D, D: B, B: U, R: R, L: L},
+    "y'": {F: L, R: F, B: R, L: B, U: U, D: D},
+    "z'": {U: L, L: D, D: R, R: U, F: F, B: B},
+    "x2": {U: D, F: B, D: U, B: F, R: R, L: L},
+    "y2": {F: B, R: L, B: F, L: R, U: U, D: D},
+    "z2": {U: D, L: R, D: U, R: L, F: F, B: B},
 }
 
 
@@ -35,4 +47,21 @@ def parse_move(move_str: str) -> Move:
 
 
 def parse_moves(scramble: str) -> List[Move]:
-    return condense_moves([parse_move(move_str) for move_str in scramble.split()])
+    apply_rotation = lambda move: move
+
+    moves = []
+    for move_str in scramble.split():
+        if move_str in CUBE_ROTATIONS:
+            rotation = CUBE_ROTATIONS[move_str]
+            previous_apply_rotation = apply_rotation
+            apply_rotation = lambda move: previous_apply_rotation(
+                (
+                    rotation[move[0]],
+                    move[1],
+                )
+            )
+        else:
+            moves.append(apply_rotation(parse_move(move_str)))
+
+    print(moves)
+    return condense_moves(moves)
