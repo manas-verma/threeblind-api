@@ -1,4 +1,4 @@
-from typing import Dict, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -17,6 +17,8 @@ class Request(BaseModel):
     parity_edges: Tuple[Edge, Edge]
     reverse_corner_mapping: Dict[str, Corner]
     reverse_edge_mapping: Dict[str, Edge]
+    edge_preference: Optional[List[str]] = None
+    corner_preference: Optional[List[str]] = None
 
 
 class Response(BaseModel):
@@ -42,5 +44,7 @@ async def handler(req: Request) -> Response:
         req.parity_edges,
         corner_mapping,
         edge_mapping,
+        req.corner_preference,
+        req.edge_preference,
     )
     return Response(memo=memo)

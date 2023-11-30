@@ -29,6 +29,15 @@ EDGE_MAPPING: Dict[Edge, str] = {
     (R, B): "J",
     (L, B): "S",
 }
+EDGE_PREFERENCE = [
+    "B",
+    "C",
+    "X",
+    "L",
+    "R",
+    "E",
+    "F",
+]
 
 CORNER_BUFFER = (U, B, L)
 CORNER_MAPPING: Dict[Corner, str] = {
@@ -57,6 +66,14 @@ CORNER_MAPPING: Dict[Corner, str] = {
     (L, D, F): "F",
     (L, D, B): "G",
 }
+CORNER_PREFERENCE = [
+    "O",
+    "X",
+    "G",
+    "K",
+    "B",
+    "C",
+]
 
 PARITY_EDGES = (
     (U, B),
