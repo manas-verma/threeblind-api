@@ -1,13 +1,7 @@
 from typing import Dict, List, Set, Tuple
 
-from app.core.cube import (
-    counter_corners,
-    counter_edge,
-    get_corners,
-    get_edges,
-    make_cube,
-    rotate_cube,
-)
+from app.core.cube import (counter_corners, counter_edge, get_corners,
+                           get_edges, make_cube, rotate_cube)
 from app.core.notation import parse_moves
 from app.models import Corner, Cube, Edge
 
@@ -28,7 +22,7 @@ def edge_memo(cube: Cube, buffer: Edge, edge_preference: List[Edge]) -> List[Edg
             unsolved_edges.remove(edge)
             unsolved_edges.insert(0, edge)
     for edge in list(unsolved_edges):
-        if edge == counter_edge(edge):
+        if edges[edge] == counter_edge(edge):
             unsolved_edges.remove(edge)
             unsolved_edges.append(edge)
     print(unsolved_edges)
@@ -70,7 +64,7 @@ def corner_memo(
             unsolved_corners.remove(corner)
             unsolved_corners.insert(0, corner)
     for corner in list(unsolved_corners):
-        if corner in counter_corners(corner):
+        if corners[corner] in counter_corners(corner):
             unsolved_corners.remove(corner)
             unsolved_corners.append(corner)
     N = len(unsolved_corners) + (3 if buffer not in unsolved_corners else 0)
