@@ -27,6 +27,10 @@ def edge_memo(cube: Cube, buffer: Edge, edge_preference: List[Edge]) -> List[Edg
         if edge in unsolved_edges:
             unsolved_edges.remove(edge)
             unsolved_edges.insert(0, edge)
+    for edge in list(unsolved_edges):
+        if edge == counter_edge(edge):
+            unsolved_edges.remove(edge)
+            unsolved_edges.append(edge)
     print(unsolved_edges)
     N = len(unsolved_edges) + (2 if buffer not in unsolved_edges else 0)
 
@@ -65,6 +69,10 @@ def corner_memo(
         if corner in unsolved_corners:
             unsolved_corners.remove(corner)
             unsolved_corners.insert(0, corner)
+    for corner in list(unsolved_corners):
+        if corner in counter_corners(corner):
+            unsolved_corners.remove(corner)
+            unsolved_corners.append(corner)
     N = len(unsolved_corners) + (3 if buffer not in unsolved_corners else 0)
 
     visited: Set[Corner] = {buffer, *counter_corners(buffer)}
